@@ -1,0 +1,27 @@
+{
+	auto_https off
+	admin off
+}
+
+:{$PORT} {
+	@s3 {
+		or {
+			header Authorization *AWS4-HMAC-SHA256*
+			header X-Amz-Date *
+			header X-Amz-Content-Sha256 *
+			query X-Amz-Algorithm *
+			query X-Amz-Credential *
+			path /minio/health*
+			path /bucket
+			path /bucket/*
+		}
+	}
+
+	handle @s3 {
+		reverse_proxy 127.0.0.1:{$MINIO_API_PORT:10100}
+	}
+
+	handle {
+		reverse_proxy 127.0.0.1:{$MINIO_CONSOLE_PORT:10101}
+	}
+}

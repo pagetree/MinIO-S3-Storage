@@ -1,0 +1,9 @@
+.git
+.gitignore
+README.md
+LICENSE
+docker-compose.yml
+.railway
+*.sql
+.env
+.env.*
