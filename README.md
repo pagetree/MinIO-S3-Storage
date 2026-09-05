@@ -2,6 +2,8 @@
 
 > Deploy your own S3-compatible object storage on Railway in one click.
 
+[**Deploy on Railway**](https://railway.com/deploy/s3-storage-one-click)
+
 **Deploy → Get S3 storage → Done.**
 
 This template starts [MinIO](https://min.io) on Railway with everything already configured. You do not enter access keys, ports, bucket names, or endpoints.
