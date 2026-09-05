@@ -23,13 +23,13 @@ A strong access key and secret key are generated when you deploy. Read them from
 A bucket named `bucket` is created during startup. If it already exists, startup still succeeds.
 
 **Web console**  
-The MinIO service gets a public console domain on port 9001. Open that URL and manage files in the browser.
+Open the Railway public URL and log in with `MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD` from the MinIO Variables tab.
 
 **S3-compatible API**  
-The primary Railway public URL is your S3 endpoint.
+Other Railway services connect on the private network:
 
 ```text
-https://${{RAILWAY_PUBLIC_DOMAIN}}
+http://${{RAILWAY_PRIVATE_DOMAIN}}:9000
 ```
 
 Region is `us-east-1`. Path style addressing works with the `bucket` bucket.
@@ -40,10 +40,10 @@ Region is `us-east-1`. Path style addressing works with the `bucket` bucket.
 from minio import Minio
 
 client = Minio(
-    "your-service.up.railway.app",
+    "minio.railway.internal:9000",
     access_key="MINIO_ROOT_USER",
     secret_key="MINIO_ROOT_PASSWORD",
-    secure=True,
+    secure=False,
 )
 
 client.fput_object("bucket", "hello.txt", "hello.txt")

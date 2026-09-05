@@ -10,7 +10,7 @@ RUN sed -i 's/\r$//' /usr/local/bin/start.sh /usr/local/bin/init-bucket.sh \
     && chmod +x /usr/local/bin/start.sh /usr/local/bin/init-bucket.sh /usr/bin/minio /usr/bin/mc
 
 ENV BUCKET_NAME=bucket \
-    MINIO_CONSOLE_PORT=9001 \
+    MINIO_API_PORT=9000 \
     RAILWAY_RUN_UID=0
 
 EXPOSE 9000 9001
