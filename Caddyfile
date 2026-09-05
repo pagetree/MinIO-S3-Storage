@@ -4,20 +4,39 @@
 }
 
 :{$PORT} {
-	@s3 {
-		or {
-			header Authorization *AWS4-HMAC-SHA256*
-			header X-Amz-Date *
-			header X-Amz-Content-Sha256 *
-			query X-Amz-Algorithm *
-			query X-Amz-Credential *
-			path /minio/health*
-			path /bucket
-			path /bucket/*
-		}
+	@aws header Authorization *AWS4-HMAC-SHA256*
+	@amzdate header X-Amz-Date *
+	@amzsha header X-Amz-Content-Sha256 *
+	@amzalg query X-Amz-Algorithm *
+	@amzcred query X-Amz-Credential *
+	@health path /minio/health /minio/health/*
+	@bucket path /bucket /bucket/*
+
+	handle @aws {
+		reverse_proxy 127.0.0.1:{$MINIO_API_PORT:10100}
 	}
 
-	handle @s3 {
+	handle @amzdate {
+		reverse_proxy 127.0.0.1:{$MINIO_API_PORT:10100}
+	}
+
+	handle @amzsha {
+		reverse_proxy 127.0.0.1:{$MINIO_API_PORT:10100}
+	}
+
+	handle @amzalg {
+		reverse_proxy 127.0.0.1:{$MINIO_API_PORT:10100}
+	}
+
+	handle @amzcred {
+		reverse_proxy 127.0.0.1:{$MINIO_API_PORT:10100}
+	}
+
+	handle @health {
+		reverse_proxy 127.0.0.1:{$MINIO_API_PORT:10100}
+	}
+
+	handle @bucket {
 		reverse_proxy 127.0.0.1:{$MINIO_API_PORT:10100}
 	}
 
