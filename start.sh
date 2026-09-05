@@ -2,12 +2,10 @@
 set -eu
 
 DATA_DIR="${RAILWAY_VOLUME_MOUNT_PATH:-/data}"
-API_PORT="${MINIO_API_PORT:-10100}"
-CONSOLE_PORT="${MINIO_CONSOLE_PORT:-10101}"
-export PORT="${PORT:-8080}"
-export MINIO_API_PORT="$API_PORT"
-export MINIO_CONSOLE_PORT="$CONSOLE_PORT"
+API_PORT="${PORT:-9000}"
+CONSOLE_PORT="${MINIO_CONSOLE_PORT:-9001}"
 export MINIO_HOST="${MINIO_HOST:-127.0.0.1}"
+export MINIO_API_PORT="$API_PORT"
 
 mkdir -p "$DATA_DIR"
 
@@ -38,21 +36,12 @@ fi
 minio server "$DATA_DIR" --address ":${API_PORT}" --console-address ":${CONSOLE_PORT}" &
 MINIO_PID=$!
 
-caddy run --config /etc/caddy/Caddyfile --adapter caddyfile &
-CADDY_PID=$!
-
 stop() {
-  kill -TERM "$MINIO_PID" "$CADDY_PID" 2>/dev/null || true
-  wait "$MINIO_PID" "$CADDY_PID" 2>/dev/null || true
+  kill -TERM "$MINIO_PID" 2>/dev/null || true
+  wait "$MINIO_PID" 2>/dev/null || true
 }
 
 trap stop INT TERM
 
 /usr/local/bin/init-bucket.sh
-
-while kill -0 "$MINIO_PID" 2>/dev/null && kill -0 "$CADDY_PID" 2>/dev/null; do
-  sleep 2
-done
-
-stop
-exit 1
+wait "$MINIO_PID"

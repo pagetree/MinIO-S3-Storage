@@ -2,14 +2,14 @@ services:
   minio:
     build: .
     ports:
-      - "9000:8080"
+      - "9000:9000"
+      - "9001:9001"
     environment:
-      PORT: "8080"
+      PORT: "9000"
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
       BUCKET_NAME: bucket
-      MINIO_API_PORT: "10100"
-      MINIO_CONSOLE_PORT: "10101"
+      MINIO_CONSOLE_PORT: "9001"
     volumes:
       - minio-data:/data
 

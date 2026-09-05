@@ -21,10 +21,10 @@ A strong access key and secret key are generated when you deploy. Read them from
 A bucket named `bucket` is created during startup. If it already exists, startup still succeeds.
 
 **Web console**  
-Open the Railway public URL and manage files in the browser.
+The MinIO service gets a public console domain on port 9001. Open that URL and manage files in the browser.
 
 **S3-compatible API**  
-The same public URL is your S3 endpoint.
+The primary Railway public URL is your S3 endpoint.
 
 ```text
 https://${{RAILWAY_PUBLIC_DOMAIN}}
@@ -55,7 +55,8 @@ Use the values from the MinIO service Variables tab for `MINIO_ROOT_USER` and `M
 docker compose up --build
 ```
 
-Console and S3 API: `http://localhost:9000`  
+S3 API: `http://localhost:9000`  
+Console: `http://localhost:9001`  
 User: `minioadmin`  
 Password: `minioadmin`
 
